@@ -29,8 +29,8 @@ public class BetaFood implements ModInitializer {
 		return instance;
 	}
 
-	public BetaFoodConfig getConfig() {
-		return config;
+	public static BetaFoodConfig getConfig() {
+		return instance.config;
 	}
 
 }

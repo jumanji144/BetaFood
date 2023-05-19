@@ -1,6 +1,8 @@
 package me.darknet.betafood;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.food.FoodProperties;
@@ -65,12 +67,13 @@ public class BetaFoodData extends FoodData {
 
 	@Override
 	public void eat(int hunger, float saturation) {
-		toHeal = hunger * BetaFood.getInstance().getConfig().getEffectiveness();
+		toHeal = hunger * BetaFood.getConfig().getEffectiveness();
 	}
 
 	@Override
 	public void eat(Item item, ItemStack itemStack) {
-		if(item.isEdible()) {
+		ResourceLocation location = BuiltInRegistries.ITEM.getKey(item);
+		if(item.isEdible() && !BetaFood.getConfig().isBlacklisted(location.toString())) {
 			FoodProperties foodProperties = item.getFoodProperties();
 			if(foodProperties != null) {
 				this.eat(foodProperties.getNutrition(), foodProperties.getSaturationModifier());

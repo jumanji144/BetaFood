@@ -17,6 +17,8 @@ public class BetaFoodConfig {
 	private int stackSize = 4;
 	private int useDuration = 1;
 	private float effectiveness = 1F;
+	private List<String> blacklisted = List.of("minecraft:rotten_flesh",
+			"minecraft:spider_eye", "minecraft:poisonous_potato");
 
 	public int getStackSize() {
 		return stackSize;
@@ -30,10 +32,22 @@ public class BetaFoodConfig {
 		return effectiveness;
 	}
 
+	public boolean isBlacklisted(String item) {
+		return blacklisted.contains(item);
+	}
+
 	public void writeToFile() {
-		String content = "stackSize=" + stackSize + "\nuseDuration=" + useDuration + "\neffectiveness=" + effectiveness;
+		StringBuilder content = new StringBuilder();
+		content.append("stackSize=").append(stackSize).append("\n");
+		content.append("useDuration=").append(useDuration).append("\n");
+		content.append("effectiveness=").append(effectiveness).append("\n");
+		content.append("blacklisted=");
+		for(String item : blacklisted) {
+			content.append(item).append(",");
+		}
+		content.append("\n");
 		try {
-			Files.write(path, content.getBytes());
+			Files.write(path, content.toString().getBytes());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -57,6 +71,7 @@ public class BetaFoodConfig {
 				case "stackSize" -> stackSize = Integer.parseInt(value);
 				case "useDuration" -> useDuration = Integer.parseInt(value);
 				case "effectiveness" -> effectiveness = Float.parseFloat(value);
+				case "blacklisted" -> blacklisted = List.of(value.split(","));
 			}
 		}
 	}

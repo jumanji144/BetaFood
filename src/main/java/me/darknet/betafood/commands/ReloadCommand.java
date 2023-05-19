@@ -14,16 +14,14 @@ public class ReloadCommand {
 		dispatcher.register(Commands.literal("betafood")
 				.requires((commandSource) -> commandSource.hasPermission(2))
 				.then(Commands.literal("reload")
-						.executes((commandContext) -> {
-							return reload();
-						})
+						.executes((commandContext) -> reload())
 				)
 		);
 	}
 
 	public static int reload() {
 		try {
-			BetaFood.getInstance().getConfig().readFromFile();
+			BetaFood.getConfig().readFromFile();
 		} catch (IOException e) {
 			return 0;
 		}
