@@ -1,6 +1,10 @@
 package me.darknet.betafood;
 
+import me.darknet.betafood.commands.ReloadCommand;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+
+import java.io.IOException;
 
 public class BetaFood implements ModInitializer {
 
@@ -11,7 +15,14 @@ public class BetaFood implements ModInitializer {
 	public void onInitialize() {
 		instance = this;
 		System.out.println("BetaFood init");
-		config.readFromFile();
+		try {
+			config.readFromFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, env) -> {
+			ReloadCommand.register(dispatcher);
+		});
 	}
 
 	public static BetaFood getInstance() {

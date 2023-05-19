@@ -39,29 +39,25 @@ public class BetaFoodConfig {
 		}
 	}
 
-	public void readFromFile() {
+	public void readFromFile() throws IOException {
 		if(!Files.exists(path)) {
 			writeToFile();
 		}
 
 		// Read from file
-		try {
-			List<String> lines = Files.readAllLines(path);
-			for(String line : lines) {
-				String[] split = line.split("=");
-				if(split.length != 2) {
-					continue;
-				}
-				String key = split[0];
-				String value = split[1];
-				switch (key) {
-					case "stackSize" -> stackSize = Integer.parseInt(value);
-					case "useDuration" -> useDuration = Integer.parseInt(value);
-					case "effectiveness" -> effectiveness = Float.parseFloat(value);
-				}
+		List<String> lines = Files.readAllLines(path);
+		for(String line : lines) {
+			String[] split = line.split("=");
+			if(split.length != 2) {
+				continue;
 			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			String key = split[0];
+			String value = split[1];
+			switch (key) {
+				case "stackSize" -> stackSize = Integer.parseInt(value);
+				case "useDuration" -> useDuration = Integer.parseInt(value);
+				case "effectiveness" -> effectiveness = Float.parseFloat(value);
+			}
 		}
 	}
 
