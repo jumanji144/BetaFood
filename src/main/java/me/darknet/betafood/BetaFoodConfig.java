@@ -2,13 +2,10 @@ package me.darknet.betafood;
 
 import net.fabricmc.loader.api.FabricLoader;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.prefs.Preferences;
 
 public class BetaFoodConfig {
 
@@ -32,8 +29,12 @@ public class BetaFoodConfig {
 		return effectiveness;
 	}
 
-	public boolean isBlacklisted(String item) {
-		return blacklisted.contains(item);
+	public boolean isAllowed(String item) {
+		return !blacklisted.contains(item);
+	}
+
+	public List<String> getBlacklisted() {
+		return blacklisted;
 	}
 
 	public void writeToFile() {

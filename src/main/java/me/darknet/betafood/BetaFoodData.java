@@ -73,7 +73,7 @@ public class BetaFoodData extends FoodData {
 	@Override
 	public void eat(Item item, ItemStack itemStack) {
 		ResourceLocation location = BuiltInRegistries.ITEM.getKey(item);
-		if(item.isEdible() && !BetaFood.getConfig().isBlacklisted(location.toString())) {
+		if(item.isEdible() && BetaFood.getConfig().isAllowed(location.toString())) {
 			FoodProperties foodProperties = item.getFoodProperties();
 			if(foodProperties != null) {
 				this.eat(foodProperties.getNutrition(), foodProperties.getSaturationModifier());

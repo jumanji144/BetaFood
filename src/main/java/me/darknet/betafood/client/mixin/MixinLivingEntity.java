@@ -1,6 +1,7 @@
 package me.darknet.betafood.client.mixin;
 
 import me.darknet.betafood.BetaFood;
+import me.darknet.betafood.client.BetaFoodClient;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +23,7 @@ public abstract class MixinLivingEntity {
 	private void onTriggerItemUseEffects(LivingEntity livingEntity, ItemStack itemStack, int i) {
 		if(livingEntity instanceof Player) {
 			ResourceLocation itemID = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
-			if(!BetaFood.getConfig().isBlacklisted(itemID.toString())) return;
+			if(BetaFoodClient.isAllowed(itemID.toString())) return;
 		}
 		livingEntity.spawnItemParticles(itemStack, i);
 	}

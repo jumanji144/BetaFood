@@ -1,6 +1,7 @@
 package me.darknet.betafood;
 
 import me.darknet.betafood.commands.ReloadCommand;
+import me.darknet.betafood.networking.BlackListSync;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 
@@ -14,6 +15,7 @@ public class BetaFood implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		instance = this;
+		BlackListSync.registerServer();
 		System.out.println("BetaFood init");
 		try {
 			config.readFromFile();
