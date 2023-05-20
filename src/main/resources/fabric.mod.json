@@ -9,14 +9,22 @@
     "repo": "https://github.com/Nowilltolife/BetaFood"
   },
   "license": "All-Rights-Reserved",
-  "environment": "server",
+  "environment": "*",
+  "accessWidener": "betafood.accessWidener",
   "entrypoints": {
     "main": [
       "me.darknet.betafood.BetaFood"
+    ],
+    "client": [
+      "me.darknet.betafood.client.BetaFoodClient"
     ]
   },
   "mixins": [
-    "BetaFood.mixins.json"
+    "BetaFood.mixins.json",
+    {
+      "config": "BetaFood.client.mixins.json",
+      "environment": "client"
+    }
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
