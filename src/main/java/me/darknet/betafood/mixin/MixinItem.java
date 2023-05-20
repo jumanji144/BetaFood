@@ -18,18 +18,17 @@ public class MixinItem {
 
 	@Inject(method = "getUseDuration", at = @At("HEAD"), cancellable = true)
 	private void onGetUseDuration(ItemStack stack, CallbackInfoReturnable<Integer> info) {
-		// get the item id of the item in the stack
-		ResourceLocation location = BuiltInRegistries.ITEM.getKey(stack.getItem());
-		if(stack.getItem().isEdible() && !BetaFood.getConfig().isBlacklisted(location.toString())) {
-			info.setReturnValue(BetaFood.getConfig().getUseDuration()); // 1 tick
+		if(stack.getItem().isEdible() && !BetaFood.getConfig().isBlacklisted(
+				BuiltInRegistries.ITEM.getKey(stack.getItem()).toString())) {
+			info.setReturnValue(BetaFood.getConfig().getUseDuration());
 		}
 	}
 
 	@Inject(method = "getMaxStackSize", at = @At("HEAD"), cancellable = true)
 	private void onGetMaxStackSize(CallbackInfoReturnable<Integer> info) {
 		Item item = (Item) (Object) this;
-		ResourceLocation location = BuiltInRegistries.ITEM.getKey(item);
-		if(item.isEdible() && !BetaFood.getConfig().isBlacklisted(location.toString())) {
+		if(item.isEdible() && !BetaFood.getConfig().isBlacklisted(
+				BuiltInRegistries.ITEM.getKey(item).toString())) {
 			info.setReturnValue(BetaFood.getConfig().getStackSize());
 		}
 	}
