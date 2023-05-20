@@ -1,5 +1,7 @@
 package me.darknet.betafood.client.mixin;
 
+import me.darknet.betafood.BetaFood;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,8 +22,12 @@ public abstract class MixinLivingEntity {
 	private void onTriggerItemUseEffects(LivingEntity livingEntity, ItemStack itemStack, int i) {
 		if(!(livingEntity instanceof Player)) { // only do it on players
 			livingEntity.spawnItemParticles(itemStack, i);
+		} else {
+			if (!itemStack.isEdible() || !BetaFood.getConfig().isBlacklisted(
+					BuiltInRegistries.ITEM.getKey(itemStack.getItem()).toString())) {
+						livingEntity.spawnItemParticles(itemStack, i);
+					}
 		}
-		// stub
 	}
 
 }
