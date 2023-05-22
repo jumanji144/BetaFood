@@ -58,6 +58,10 @@ public abstract class MixinGui {
 		renderBars(poseStack);
 	}
 
+	/**
+	 * Extracted and rewritten from net.minecraft.client.gui.Gui#renderPlayerHealth(PoseStack)
+	 * @param poseStack
+	 */
 	public void renderBars(PoseStack poseStack) {
 		Player player = this.getCameraPlayer();
 		int i = Mth.ceil(player.getHealth());
