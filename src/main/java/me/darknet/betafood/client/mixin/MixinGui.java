@@ -3,6 +3,8 @@ package me.darknet.betafood.client.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
@@ -16,8 +18,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static net.minecraft.client.gui.GuiComponent.blit;
 
 @Mixin(Gui.class)
 public abstract class MixinGui {
@@ -40,11 +40,13 @@ public abstract class MixinGui {
 
 	@Shadow private int displayHealth;
 
-	@Shadow protected abstract void renderHearts(PoseStack poseStack, Player player, int i, int j, int k, int l, float f, int m, int n, int o, boolean bl);
+	@Shadow protected abstract void renderHearts(GuiGraphics poseStack, Player player, int i, int j, int k, int l, float f, int m, int n, int o, boolean bl);
 
 	@Shadow private int tickCount;
 
 	@Shadow private long healthBlinkTime;
+
+	@Shadow private final static ResourceLocation GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
 
 	@Inject(method = "renderPlayerHealth",
 			at = @At(
@@ -52,7 +54,7 @@ public abstract class MixinGui {
 					target="Lnet/minecraft/util/profiling/ProfilerFiller;push(Ljava/lang/String;)V"
 			),
 			cancellable = true)
-	private void onRenderPlayerHealth(PoseStack poseStack, CallbackInfo ci) {
+	private void onRenderPlayerHealth(GuiGraphics poseStack, CallbackInfo ci) {
 		// rewrite the render player health
 		ci.cancel();
 		renderBars(poseStack);
@@ -62,7 +64,7 @@ public abstract class MixinGui {
 	 * Extracted and rewritten from net.minecraft.client.gui.Gui#renderPlayerHealth(PoseStack)
 	 * @param poseStack
 	 */
-	public void renderBars(PoseStack poseStack) {
+	public void renderBars(GuiGraphics poseStack) {
 		Player player = this.getCameraPlayer();
 		int i = Mth.ceil(player.getHealth());
 		int j = this.displayHealth;
@@ -95,15 +97,15 @@ public abstract class MixinGui {
 				// where the food bar used to be
 				int armorX = xBase + m + w * 8; // this is above the player hearts
 				if (w * 2 + 1 < u) {
-					blit(poseStack, armorX, armorY, 34, 9, 9, 9);
+					poseStack.blit(GUI_ICONS_LOCATION, armorX, armorY, 34, 9, 9, 9);
 				}
 
 				if (w * 2 + 1 == u) {
-					blit(poseStack, armorX, armorY, 25, 9, 9, 9);
+					poseStack.blit(GUI_ICONS_LOCATION, armorX, armorY, 25, 9, 9, 9);
 				}
 
 				if (w * 2 + 1 > u) {
-					blit(poseStack, armorX, armorY, 16, 9, 9, 9);
+					poseStack.blit(GUI_ICONS_LOCATION, armorX, armorY, 16, 9, 9, 9);
 				}
 			}
 		}
@@ -125,9 +127,9 @@ public abstract class MixinGui {
 
 			for(int ad = 0; ad < ab + ac; ++ad) {
 				if (ad < ab) {
-					blit(poseStack, n - ad * 8 - 9, depth, 16, 18, 9, 9);
+					poseStack.blit(GUI_ICONS_LOCATION, n - ad * 8 - 9, depth, 16, 18, 9, 9);
 				} else {
-					blit(poseStack, n - ad * 8 - 9, depth, 25, 18, 9, 9);
+					poseStack.blit(GUI_ICONS_LOCATION, n - ad * 8 - 9, depth, 25, 18, 9, 9);
 				}
 			}
 		}
